@@ -37,8 +37,8 @@ PAYMENT_WEBHOOK_PATH = '/unifreelance/payment-webhook'
 WEBAPP_HOST = '127.0.0.1'
 WEBAPP_PORT = int(config("WEBAPP_PORT"))
 
-# WEBHOOK_SSL_CERT = config('WEBHOOK_SSL_CERT')
-# WEBHOOK_SSL_PRIV = config('WEBHOOK_SSL_PRIV')
+WEBHOOK_SSL_CERT = config('WEBHOOK_SSL_CERT')
+WEBHOOK_SSL_PRIV = config('WEBHOOK_SSL_PRIV')
 
 # Формат времени
 DATETIME_FORMAT = "%Y-%m-%d %H:%M"

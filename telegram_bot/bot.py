@@ -1,5 +1,6 @@
 import asyncio
 import json
+import ssl
 import time
 import traceback
 from datetime import date, timedelta, datetime
@@ -20,7 +21,7 @@ from deep_translator import GoogleTranslator
 import telegram_bot
 from headers import (bot, dp, scheduler, ADMINS, router, BOT_WEBHOOK_PATH, BASE_WEBHOOK_URL, mode,
                      PAYMENT_WEBHOOK_PATH, WEBAPP_PORT, WEBAPP_HOST, DATETIME_FORMAT, tz, ACTIVE_COUNT_SUB_LIMIT,
-                     logging, r)
+                     logging, r, WEBHOOK_SSL_PRIV, WEBHOOK_SSL_CERT)
 from keyboards import *
 from parser.db_engine import get_task_by_id, create_database
 from telegram_bot.db_engine import check_user_exists, get_user_by_telegram_id, get_filters_by_user_id, \
@@ -1003,8 +1004,12 @@ async def main():
         # Настройка вебхуков
         setup_application(app, dp, bot=bot)
 
+        # Generate SSL context
+        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        context.load_cert_chain(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV)
+
         # Запуск веб-приложения
-        return await web._run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
+        return await web._run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT, ssl_context=context)
 
     # Запуск всех задач параллельно
     await asyncio.gather(*tasks)
