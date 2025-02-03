@@ -80,7 +80,8 @@ services:
     command: celery -A telegram_bot.celery_worker flower --port=5555 --broker=redis://redis:6379/0
     ports:
       - "5555:5555"
-      -
+
+
 volumes:
   postgres_data:
   redis_data:
