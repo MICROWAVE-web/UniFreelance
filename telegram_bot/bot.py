@@ -1003,8 +1003,7 @@ async def main():
         setup_application(app, dp, bot=bot)
 
         # Запуск веб-приложения
-        task_1 = asyncio.create_task(web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT))
-        tasks.append(task_1)
+        web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
 
     # Запуск всех задач параллельно
     await asyncio.gather(*tasks)
