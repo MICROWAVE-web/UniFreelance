@@ -990,7 +990,7 @@ async def main():
 
         # Настройка веб-сервера
         app = web.Application()
-        app.router.add_post(PAYMENT_WEBHOOK_PATH, payment_webhook_handler)
+        # app.router.add_post(PAYMENT_WEBHOOK_PATH, payment_webhook_handler)
 
         webhook_requests_handler = SimpleRequestHandler(
             dispatcher=dp,
