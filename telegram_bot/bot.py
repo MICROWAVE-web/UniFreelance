@@ -447,7 +447,9 @@ async def save_price_range(message: types.Message, state: FSMContext):
 
     # Проверка формата
     if not price_range.replace("-", "").isdigit():
-        sent_message = await message.answer("Неверный формат! Введите диапазон в формате: min-max (например, «100-1000»)", reply_markup=back_to_platform_settings(platform))
+        sent_message = await message.answer(
+            "Неверный формат! Введите диапазон в формате: min-max (например, «100-1000»)",
+            reply_markup=back_to_platform_settings(platform))
         await state.update_data(last_message_id=sent_message.message_id)
         return
 
@@ -1005,8 +1007,8 @@ async def main():
         setup_application(app, dp, bot=bot)
 
         # Generate SSL context
-        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-        context.load_cert_chain(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV)
+        ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ssl_context.load_cert_chain(certfile=WEBHOOK_SSL_CERT, keyfile=WEBHOOK_SSL_PRIV)
 
         # Запуск веб-приложения
         return await web._run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT, ssl_context=context)
