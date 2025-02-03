@@ -1003,11 +1003,22 @@ async def main():
         setup_application(app, dp, bot=bot)
 
         # Запуск веб-приложения
-        web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
+        await web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
 
     # Запуск всех задач параллельно
     await asyncio.gather(*tasks)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # Check if an event loop is already running
+    try:
+        # This handles running in environments where there's already an event loop (e.g., aiohttp)
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # In case you're inside an existing event loop, just await the main() function
+            asyncio.ensure_future(main())
+        else:
+            asyncio.run(main())
+    except RuntimeError:
+        # If no event loop is running, run the main function as usual
+        asyncio.run(main())
