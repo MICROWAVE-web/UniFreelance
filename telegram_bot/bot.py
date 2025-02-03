@@ -1011,7 +1011,7 @@ async def main():
         ssl_context.load_cert_chain(certfile=WEBHOOK_SSL_CERT, keyfile=WEBHOOK_SSL_PRIV)
 
         # Запуск веб-приложения
-        return await web._run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT, ssl_context=context)
+        return await web._run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT, ssl_context=ssl_context)
 
     # Запуск всех задач параллельно
     await asyncio.gather(*tasks)
