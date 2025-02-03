@@ -950,6 +950,7 @@ def make_pause_notification(telegram_id):
 async def on_startup(*args, **kwargs) -> None:
     webhook_url = f"{BASE_WEBHOOK_URL}{BOT_WEBHOOK_PATH}"
     webhook_info = await bot.get_webhook_info()
+    print(webhook_info)
     if webhook_info.url != webhook_url:
         await bot.set_webhook(
             url=webhook_url,

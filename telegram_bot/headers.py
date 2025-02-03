@@ -31,8 +31,8 @@ else:
     pass
 # Настройка webhook
 BASE_WEBHOOK_URL = f'https://{config("WEBHOOK_DOMAIN")}'
-BOT_WEBHOOK_PATH = '/unifreelance-webhook'
-PAYMENT_WEBHOOK_PATH = '/unifreelance-payment-webhook'
+BOT_WEBHOOK_PATH = '/unifreelance/webhook'
+PAYMENT_WEBHOOK_PATH = '/unifreelance/payment-webhook'
 
 WEBAPP_HOST = '127.0.0.1'
 WEBAPP_PORT = int(config("WEBAPP_PORT"))
