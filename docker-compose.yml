@@ -80,16 +80,7 @@ services:
     command: celery -A telegram_bot.celery_worker flower --port=5555 --broker=redis://redis:6379/0
     ports:
       - "5555:5555"
-
-  nginx:
-    image: nginx:latest
-    depends_on:
-      bot:
-        condition: service_started  # Запуск после приложения
-    ports:
-      - "443:443"  # Внешний порт для доступа
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Конфигурация Nginx
+      -
 volumes:
   postgres_data:
   redis_data:
