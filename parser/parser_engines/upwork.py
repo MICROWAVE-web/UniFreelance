@@ -13,9 +13,9 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from .order_object import Order
+from parser.parser_engines.order_object import Order
 
-from utilities import get_http_proxy
+from parser.utilities import get_http_proxy
 
 orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
 
@@ -23,8 +23,8 @@ isLinux = platform.system() == 'Linux'
 
 
 def parse_last_ten():
-    os.system("pkill chrome")
     if isLinux:
+        os.system("pkill chrome")
         # Конфигурация Xvfb
         from pyvirtualdisplay import Display
 
@@ -38,7 +38,7 @@ def parse_last_ten():
     options.add_argument("--no-sandbox")
     # options.add_argument('--headless')
     options.add_argument("--disable-dev-shm-usage")
-    driver_path = ChromeDriverManager(driver_version='131.0.6778.204').install()
+    # driver_path = ChromeDriverManager().install()
     try:
         driver = uc.Chrome(
             # driver_executable_path=driver_path,
