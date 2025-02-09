@@ -988,7 +988,7 @@ async def main():
     else:
         # Middleware для ограничения
         dp.include_router(router)
-        dp.message.middleware(ThrottlingMiddleware(redis.Redis(host='localhost', port=6379, db=1)))
+        dp.message.middleware(ThrottlingMiddleware(redis.Redis(host='redis', port=6379, db=1)))
 
         dp.startup.register(on_startup)
 
