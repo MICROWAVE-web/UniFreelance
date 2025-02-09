@@ -35,10 +35,10 @@ def parse_last_ten():
     options.add_argument("--no-sandbox")
     # options.add_argument('--headless')
     options.add_argument("--disable-dev-shm-usage")
-    # driver_path = ChromeDriverManager().install()
+    driver_path = ChromeDriverManager().install()
     try:
         driver = uc.Chrome(
-            # driver_executable_path=driver_path,
+            driver_executable_path=driver_path,
             use_subprocess=True,
             options=options
         )
