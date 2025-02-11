@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import ChromeOptions
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 
 orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
 
@@ -44,7 +44,7 @@ def parse_last_ten():
     options.add_argument('--disable-gpu')  # Отключить GPU (для серверов)
 
     # Переход на сайт
-    driver = uc.Chrome(service=ChromeDriverManager().install(), options=options)
+    driver = uc.Chrome(options=options)
     try:
         driver.get(orders_url.format(query=''))
         time.sleep(random.randint(1, 5))
