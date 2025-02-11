@@ -19,7 +19,7 @@ orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
 
 isLinux = platform.system() == 'Linux'
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def parse_last_ten():
