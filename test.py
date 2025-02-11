@@ -1,3 +1,4 @@
+import logging
 import os
 import platform
 import random
@@ -12,11 +13,14 @@ from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
+from undetected_chromedriver import ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 
 orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
 
 isLinux = platform.system() == 'Linux'
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def parse_last_ten():
@@ -28,20 +32,21 @@ def parse_last_ten():
         # Запускаем виртуальный дисплей
         display = Display(visible=False, size=(1024, 768))
         display.start()
-    options = uc.ChromeOptions()
-    options.add_argument("--window-size=1024, 768")
-    options.add_argument(f"--proxy-server={config('PROXY')}")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    # options.add_argument('--headless')
-    options.add_argument("--disable-dev-shm-usage")
-    driver_path = ChromeDriverManager().install()
+    options = ChromeOptions()
+    options.add_argument('--headless')  # Запускать в фоновом режиме
+    options.add_argument('--no-sandbox')  # Отключить sandbox
+    options.add_argument('--disable-dev-shm-usage')  # Отключить использование /dev/shm
+    options.add_argument('start-maximized')  # Открывать в максимизированном окне
+    options.add_argument('disable-infobars')  # Отключить уведомления
+    options.add_argument('--disable-extensions')  # Отключить расширения
+    options.add_argument('--proxy-server="direct://"')  # Без прокси
+    options.add_argument('--proxy-bypass-list=*')  # Бypass для всех прокси
+    options.add_argument('--disable-gpu')  # Отключить GPU (для серверов)
+
+
+    # Переход на сайт
     try:
-        driver = uc.Chrome(
-            driver_executable_path=driver_path,
-            use_subprocess=True,
-            options=options
-        )
+        driver = uc.Chrome(service=ChromeDriverManager().install(), options=options)
     except Exception:
         traceback.print_exc()
         return [], 'error'
