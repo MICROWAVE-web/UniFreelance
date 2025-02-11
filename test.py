@@ -130,6 +130,9 @@ def parse_last_ten():
 
 if __name__ == '__main__':
     os.chdir('../../')
+    print(orders_url)
+    print("https://ipv4.myexternalip.com/raw/")
+    url = input("Введите адрес: ")
     orders, status = parse_last_ten()
     for o in orders:
         print(o)
