@@ -48,54 +48,8 @@ def parse_last_ten():
     try:
         driver.get(orders_url.format(query=''))
         time.sleep(random.randint(1, 5))
-        # Ожидаем, пока нужный элемент полностью загрузится
-        try:
-            WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.XPATH, "//article")))
-        except TimeoutException:
-            print("Timed out waiting for page to load")
-            return [], 'error'
-        html = driver.page_source
-        BeautifulSoup(html, 'html.parser')
-        # Список для хранения данных
-        orders_data = []
-        # Перебираем до 10 блоков с номерами
-        for i in range(1, 11):
-            try:
-                # Путь к нужному блоку по XPath
-                article_xpath = f"/html/body/div[4]/div/div/div[1]/main/div/div/div/div[2]/div[2]/section/article[{i}]"
+        print(driver.page_source)
 
-                # Ищем блок статьи
-                article = driver.find_element(By.XPATH, article_xpath)
-
-                # Извлекаем task_id
-                task_id = article.get_attribute("data-ev-job-uid")
-
-                # Извлекаем title
-                title_element = article.find_element(By.XPATH, "./div[1]/div[1]/div/div/h2/a")
-                title = title_element.text.strip()
-
-                # Извлекаем payment (можно сделать это с помощью XPath или другой логики)
-                payment_element = article.find_element(By.XPATH, "./div[2]/ul")
-                payment = payment_element.text.strip()
-
-                # Извлекаем description
-                description_element = article.find_element(By.XPATH, "./div[2]/div[1]/div/p")
-                description = description_element.text.strip()
-
-                # Извлекаем direct_url
-                direct_url = title_element.get_attribute("href")
-
-                # Добавляем все данные в список
-                print(
-                    task_id, title, payment, description, direct_url, platform
-                )
-
-            except Exception:
-                print(f"Ошибка при обработке блока {i}:")
-                traceback.print_exc()
-                continue  # Переход к следующему блоку, если возникла ошибка
-
-        return orders_data, 'success'
     except requests.ConnectionError:
         print('Request Error:')
         traceback.print_exc()
