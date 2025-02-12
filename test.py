@@ -13,6 +13,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import ChromeOptions
+
+from parser.utilities import get_http_proxy
+
 # from webdriver_manager.chrome import ChromeDriverManager
 
 orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
@@ -42,6 +45,7 @@ def parse_last_ten(url):
     options.add_argument('--proxy-bypass-list=*')  # Бypass для всех прокси\
     options.add_argument("--remote-debugging-port=9230")
     options.add_argument('--disable-gpu')  # Отключить GPU (для серверов)
+    options.add_argument(f"--proxy-server={get_http_proxy()}")
 
     # Переход на сайт
     driver = uc.Chrome(options=options)
