@@ -22,7 +22,7 @@ isLinux = platform.system() == 'Linux'
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def parse_last_ten():
+def parse_last_ten(url):
     if isLinux:
         os.system("pkill chrome")
         # Конфигурация Xvfb
@@ -46,7 +46,7 @@ def parse_last_ten():
     # Переход на сайт
     driver = uc.Chrome(options=options)
     try:
-        driver.get(orders_url.format(query=''))
+        driver.get(url.format(query=''))
         time.sleep(random.randint(1, 5))
         print(driver.page_source)
 
@@ -87,6 +87,6 @@ if __name__ == '__main__':
     print(orders_url)
     print("https://ipv4.myexternalip.com/raw/")
     url = input("Введите адрес: ")
-    orders, status = parse_last_ten()
+    orders, status = parse_last_ten(url)
     for o in orders:
         print(o)
