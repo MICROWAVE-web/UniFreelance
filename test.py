@@ -18,7 +18,7 @@ from parser.utilities import get_http_proxy
 
 # from webdriver_manager.chrome import ChromeDriverManager
 
-orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
+
 
 isLinux = platform.system() == 'Linux'
 
@@ -51,7 +51,7 @@ def parse_last_ten(url):
     # Переход на сайт
     driver = uc.Chrome(options=options)
     try:
-        driver.get(orders_url.format(query=''))
+        driver.get(url.format(query=''))
         time.sleep(random.randint(1, 5))
         print(driver.page_source)
 
@@ -91,6 +91,7 @@ if __name__ == '__main__':
     os.chdir('../../')
     # print(orders_url)
     # print("https://ipv4.myexternalip.com/raw/")
+    # url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
     url = "https://httpbin.io/ip"
     orders, status = parse_last_ten(url)
     for o in orders:
