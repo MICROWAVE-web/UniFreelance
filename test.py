@@ -91,8 +91,8 @@ if __name__ == '__main__':
     os.chdir('../../')
     # print(orders_url)
     # print("https://ipv4.myexternalip.com/raw/")
-    # url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
-    url = "https://httpbin.io/ip"
+    url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
+    # url = "https://httpbin.io/ip"
     orders, status = parse_last_ten(url)
     for o in orders:
         print(o)
