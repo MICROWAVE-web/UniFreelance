@@ -41,11 +41,12 @@ def parse_last_ten(url):
     options.add_argument('start-maximized')  # Открывать в максимизированном окне
     options.add_argument('disable-infobars')  # Отключить уведомления
     options.add_argument('--disable-extensions')  # Отключить расширения
-    options.add_argument('--proxy-server="direct://"')  # Без прокси
-    options.add_argument('--proxy-bypass-list=*')  # Бypass для всех прокси\
+    # options.add_argument('--proxy-server="direct://"')  # Без прокси
+    # options.add_argument('--proxy-bypass-list=*')  # Бypass для всех прокси\
     options.add_argument("--remote-debugging-port=9230")
     options.add_argument('--disable-gpu')  # Отключить GPU (для серверов)
     options.add_argument(f"--proxy-server={get_http_proxy()}")
+    print(f"--proxy-server={get_http_proxy()}")
 
     # Переход на сайт
     driver = uc.Chrome(options=options)
@@ -88,9 +89,9 @@ def parse_last_ten(url):
 
 if __name__ == '__main__':
     os.chdir('../../')
-    print(orders_url)
-    print("https://ipv4.myexternalip.com/raw/")
-    url = input("Введите адрес: ")
+    # print(orders_url)
+    # print("https://ipv4.myexternalip.com/raw/")
+    url = "https://httpbin.io/ip"
     orders, status = parse_last_ten(url)
     for o in orders:
         print(o)
