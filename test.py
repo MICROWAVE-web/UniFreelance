@@ -38,8 +38,8 @@ def parse_last_ten(url):
     # options.add_argument('--headless')  # Запускать в фоновом режиме
     options.add_argument('--no-sandbox')  # Отключить sandbox
     options.add_argument('--disable-dev-shm-usage')  # Отключить использование /dev/shm
-    options.add_argument('start-maximized')  # Открывать в максимизированном окне
-    options.add_argument('disable-infobars')  # Отключить уведомления
+    options.add_argument('--start-maximized')  # Открывать в максимизированном окне
+    options.add_argument('--disable-infobars')  # Отключить уведомления
     options.add_argument('--disable-extensions')  # Отключить расширения
     # options.add_argument('--proxy-server="direct://"')  # Без прокси
     # options.add_argument('--proxy-bypass-list=*')  # Бypass для всех прокси\
@@ -51,7 +51,7 @@ def parse_last_ten(url):
     # Переход на сайт
     driver = uc.Chrome(options=options)
     try:
-        driver.get(url.format(query=''))
+        driver.get(orders_url.format(query=''))
         time.sleep(random.randint(1, 5))
         print(driver.page_source)
 
