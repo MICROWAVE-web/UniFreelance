@@ -1,10 +1,19 @@
 import json
 import os
 
+import telebot
 from decouple import config
 from random_user_agent.params import SoftwareName, OperatingSystem
 from random_user_agent.user_agent import UserAgent
 from randomheader import RandomHeader
+
+from telegram_bot.headers import ADMINS
+
+
+def wakeup_admins(message):
+    bot = telebot.TeleBot(config("API_TOKEN"))
+    for admin in ADMINS:
+        bot.send_message(chat_id=admin, text=message)
 
 
 def get_http_proxy():
@@ -34,6 +43,7 @@ def get_habr_cookies():
         cookies = json.load(file)
     return cookies
 
+
 def get_upwork_cookies():
     print([f for f in os.listdir('.')])
     """
@@ -47,6 +57,7 @@ def get_upwork_cookies():
 def get_headers():
     rh = RandomHeader()
     return rh.header()
+
 
 if __name__ == '__main__':
     print(get_habr_cookies())

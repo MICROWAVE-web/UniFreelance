@@ -7,17 +7,11 @@ import traceback
 
 import requests
 import undetected_chromedriver as uc
-from bs4 import BeautifulSoup
-from selenium.common import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.wait import WebDriverWait
 from undetected_chromedriver import ChromeOptions
 
 from parser.utilities import get_http_proxy
 
 # from webdriver_manager.chrome import ChromeDriverManager
-
 
 
 isLinux = platform.system() == 'Linux'
@@ -35,6 +29,12 @@ def parse_last_ten(url):
         display = Display(visible=False, size=(1024, 768))
         display.start()
     options = ChromeOptions()
+    custom_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+
+    # set a custom user agent in the browser option
+
+    options.add_argument(f'--user-agent={custom_user_agent}')
+
     # options.add_argument('--headless')  # Запускать в фоновом режиме
     options.add_argument('--no-sandbox')  # Отключить sandbox
     options.add_argument('--disable-dev-shm-usage')  # Отключить использование /dev/shm

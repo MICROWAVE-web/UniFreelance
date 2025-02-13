@@ -36,13 +36,15 @@ def parse_last_ten():
     options.add_argument(f"--proxy-server={get_http_proxy()}")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
+    options.add_argument('--start-maximized')  # Открывать в максимизированном окне
+    options.add_argument('--disable-infobars')  # Отключить уведомления
+    options.add_argument('--disable-extensions')  # Отключить расширения
     # options.add_argument('--headless')
     options.add_argument("--disable-dev-shm-usage")
     # driver_path = ChromeDriverManager().install()
     try:
         driver = uc.Chrome(
             # driver_executable_path=driver_path,
-            use_subprocess=True,
             options=options
         )
     except Exception:
@@ -53,7 +55,7 @@ def parse_last_ten():
         time.sleep(random.randint(1, 5))
         # Ожидаем, пока нужный элемент полностью загрузится
         try:
-            WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.XPATH, "//article")))
+            WebDriverWait(driver, 30).until(ec.presence_of_element_located((By.XPATH, "//article")))
         except TimeoutException:
             print("Timed out waiting for page to load")
             return [], 'error'
@@ -101,17 +103,10 @@ def parse_last_ten():
                 continue  # Переход к следующему блоку, если возникла ошибка
 
         return orders_data, 'success'
-    except requests.ConnectionError:
-        print('Request Error:')
-        traceback.print_exc()
-        return [], 'error'
-    except requests.exceptions.RequestException:
-        print('Request Error:')
-        traceback.print_exc()
-        return [], 'error'
     except Exception:
         print('Unexpected error:')
         traceback.print_exc()
+        wakeup_admins(traceback.format_exc())
         return [], 'error'
     finally:
 
