@@ -22,8 +22,6 @@ def parse_last_ten():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
-    driver_path = ChromeDriverManager(driver_version='131.0.6778.204').install()
-
     driver = uc.Chrome(
         use_subprocess=False,
         options=options
