@@ -15,7 +15,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from parser.parser_engines.order_object import Order
 
-from parser.utilities import get_http_proxy
+from parser.utilities import get_http_proxy, wakeup_admins
 
 orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
 
