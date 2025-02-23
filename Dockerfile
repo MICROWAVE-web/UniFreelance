@@ -1,5 +1,5 @@
 # Используем официальный образ Python (полный)
-FROM joyzoursky/python-chromedriver:3.89
+FROM joyzoursky/python-chromedriver:3.9
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
