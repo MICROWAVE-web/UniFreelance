@@ -44,7 +44,7 @@ def get_engine():
 
 
 # Функция для создания таблиц
-def create_database():
+def create_parser_database():
     # Создание подключения
     engine = get_engine()
 
@@ -132,4 +132,4 @@ def save_to_db(orders, platform):
 
 
 if __name__ == '__main__':
-    create_database()
+    create_parser_database()

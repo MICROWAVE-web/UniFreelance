@@ -18,9 +18,21 @@ services:
 
   parser:
     build: .
-    command: python -u parser/run_parser.py
+    environment:
+      - DISPLAY=:0
+      - VNC_PASSWORD=password
     volumes:
       - .:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - "5900:5900"
+    command: >
+      bash -c "Xvfb :0 -screen 0 1920x1080x24 & 
+               fluxbox & 
+               x11vnc -passwd $VNC_PASSWORD -N -forever -rfbport 5900 & 
+               python -u parser/run_parser.py"
     depends_on:
       db:
         condition: service_healthy
@@ -66,20 +78,20 @@ services:
     command: celery -A telegram_bot.celery_worker worker -P solo --loglevel=info
 
 
-  flower:
-    build:
-      context: .
-    container_name: flower
-    depends_on:
-      - redis
-    volumes:
-      - .:/app
-    environment:
-      - PYTHONPATH=/app  # Add /app to the Python path
-      - FLOWER_UNAUTHENTICATED_API=true
-    command: celery -A telegram_bot.celery_worker flower --port=5555 --broker=redis://redis:6379/0
-    ports:
-      - "5555:5555"
+  #flower:
+  #  build:
+  #    context: .
+  #  container_name: flower
+  #  depends_on:
+  #    - redis
+  #  volumes:
+  #    - .:/app
+  #  environment:
+  #    - PYTHONPATH=/app  # Add /app to the Python path
+  #    - FLOWER_UNAUTHENTICATED_API=true
+  #  command: celery -A telegram_bot.celery_worker flower --port=5555 --broker=redis://redis:6379/0
+  #  ports:
+  #    - "5555:5555"
 
 
 volumes:

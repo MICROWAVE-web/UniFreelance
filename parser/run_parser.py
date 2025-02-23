@@ -1,10 +1,16 @@
+import sys
+import os
+
+# Добавление корневого каталога проекта в путь поиска
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import random
 import time
 from datetime import datetime
 
 from decouple import config
 
-from db_engine import create_database
+from db_engine import create_parser_database
 from db_engine import save_to_db  # Импорт функции для сохранения в БД
 from parser_engines import fl, habr, kwork, upwork  # Импорт парсеров
 
@@ -51,5 +57,5 @@ def parse_orders():
 # Запуск программы
 if __name__ == '__main__':
     # Проверка создания таблиц
-    create_database()
+    create_parser_database()
     parse_orders()

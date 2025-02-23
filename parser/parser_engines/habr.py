@@ -1,9 +1,13 @@
+import sys
 import os
+
+# Добавление корневого каталога проекта в путь поиска
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 import traceback
 
 import requests
 from bs4 import BeautifulSoup
-from utilities import get_habr_cookies, get_headers
+from parser.utilities import get_habr_cookies, get_headers
 
 from .order_object import Order
 

@@ -1,11 +1,14 @@
+import sys
 import os
+
+# Добавление корневого каталога проекта в путь поиска
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 import random
 import time
 import traceback
 
 import requests
 import undetected_chromedriver as uc
-from webdriver_manager.chrome import ChromeDriverManager
 
 from .order_object import Order
 

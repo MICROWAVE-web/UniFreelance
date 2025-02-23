@@ -1,3 +1,9 @@
+import sys
+import os
+
+# Добавление корневого каталога проекта в путь поиска
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import asyncio
 import json
 import ssl
@@ -18,15 +24,15 @@ from aiohttp import web
 from apscheduler.triggers.date import DateTrigger
 from deep_translator import GoogleTranslator
 
-import telegram_bot
 from headers import (bot, dp, scheduler, ADMINS, router, BOT_WEBHOOK_PATH, BASE_WEBHOOK_URL, mode,
                      PAYMENT_WEBHOOK_PATH, WEBAPP_PORT, WEBAPP_HOST, DATETIME_FORMAT, tz, ACTIVE_COUNT_SUB_LIMIT,
                      logging, r, WEBHOOK_SSL_PRIV, WEBHOOK_SSL_CERT)
+
 from keyboards import *
-from parser.db_engine import get_task_by_id, create_database
+from parser.db_engine import get_task_by_id, create_parser_database
 from telegram_bot.db_engine import check_user_exists, get_user_by_telegram_id, get_filters_by_user_id, \
     get_active_subscriptions, get_inactive_subscriptions, delete_filter, add_filter, add_sale_to_user, add_user, \
-    get_filter_by_user_id, edit_filter_query_by_user_id
+    get_filter_by_user_id, edit_filter_query_by_user_id, create_bot_database
 from telegram_bot.utilities import safe_json_loads
 from throttle_middleware import ThrottlingMiddleware
 
@@ -970,10 +976,10 @@ async def main():
     # Создание базы данных (если нужно)
 
     # БД для бота
-    telegram_bot.db_engine.create_database()
+    create_parser_database()
 
     # БД для парсера
-    create_database()
+    create_bot_database()
 
     # Запуск шедулера
     scheduler.start()

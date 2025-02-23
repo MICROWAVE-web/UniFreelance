@@ -78,7 +78,7 @@ def setup_database():
 
 
 # Функция для создания таблиц
-def create_database():
+def create_bot_database():
     # Создание подключения
     engine = get_engine()
 
@@ -220,7 +220,7 @@ def collect_filters():
 
 # Пример использования
 if __name__ == "__main__":
-    create_database()
+    create_bot_database()
     # Добавление пользователя
     user = add_user(telegram_id="123456789", referral="REF123", try_period=True)
 
