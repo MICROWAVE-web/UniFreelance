@@ -1,36 +1,48 @@
+import logging
 import os
 import platform
 import random
 import time
 import traceback
 
-import requests
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
 
 from parser.parser_engines.order_object import Order
-
 from parser.utilities import get_http_proxy, wakeup_admins
 
 orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
 
 isLinux = platform.system() == 'Linux'
 
+if isLinux:
+    from pyvirtualdisplay import Display
+
+
+def safe_find_element(driver, by, value, retries=3, delay=2):
+    for _ in range(retries):
+        try:
+            return driver.find_element(by, value)
+        except Exception as e:
+            print(f"Error finding element: {e}. Retrying...")
+            time.sleep(delay)
+    return None
+
 
 def parse_last_ten():
     if isLinux:
-        os.system("pkill chrome")
-        # Конфигурация Xvfb
-        from pyvirtualdisplay import Display
+        try:
+            display = Display(visible=False, size=(1024, 768))
+            display.start()
+        except Exception:
+            logging.error(f"Failed to start virtual display!")
+            traceback.print_exc()
+            return [], 'error'
 
-        # Запускаем виртуальный дисплей
-        display = Display(visible=False, size=(1024, 768))
-        display.start()
     options = uc.ChromeOptions()
     options.add_argument("--window-size=1024, 768")
     options.add_argument(f"--proxy-server={get_http_proxy()}")
@@ -70,7 +82,12 @@ def parse_last_ten():
                 article_xpath = f"/html/body/div[4]/div/div/div[1]/main/div/div/div/div[2]/div[2]/section/article[{i}]"
 
                 # Ищем блок статьи
-                article = driver.find_element(By.XPATH, article_xpath)
+                article = safe_find_element(driver, By.XPATH, article_xpath)
+                if not article:
+                    logging.error("Article not found")
+                    continue  # Пропустить блок, если элемент не найден
+
+                # article = driver.find_element(By.XPATH, article_xpath)
 
                 # Извлекаем task_id
                 task_id = article.get_attribute("data-ev-job-uid")
@@ -113,7 +130,11 @@ def parse_last_ten():
 
         if isLinux:
             # Остановка виртуального дисплея
-            display.stop()
+            try:
+                display.stop()
+            except Exception:
+                logging.error(f"Failed to stop virtual display!")
+                traceback.print_exc()
 
         # Закрытие окон браузера
         try:
@@ -126,7 +147,11 @@ def parse_last_ten():
             pass
 
         # Закрытие браузера
-        driver.quit()
+        try:
+            display.stop()
+        except Exception:
+            print(f"Failed to stop virtual display!")
+            traceback.print_exc()
 
 
 if __name__ == '__main__':

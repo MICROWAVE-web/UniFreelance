@@ -1,7 +1,9 @@
 import json
+import logging
 import os
 import traceback
 
+import requests
 import telebot
 from decouple import config
 from random_user_agent.params import SoftwareName, OperatingSystem
@@ -19,6 +21,16 @@ def wakeup_admins(message):
             bot.send_message(chat_id=admin, text=message)
     except Exception:
         traceback.print_exc()
+
+
+def check_proxy(proxy):
+    try:
+        response = requests.get("https://www.google.com", proxies={"http": proxy, "https": proxy}, timeout=10)
+        return response.status_code == 200
+    except Exception:
+        logging.error("Error, while proxy checking!")
+        logging.error(traceback.format_exc())
+        return False
 
 
 def get_http_proxy():
@@ -50,7 +62,6 @@ def get_habr_cookies():
 
 
 def get_upwork_cookies():
-    print([f for f in os.listdir('.')])
     """
     Читает cookies из файла и возвращает их в виде словаря.
     """

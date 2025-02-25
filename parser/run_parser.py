@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 # Добавление корневого каталога проекта в путь поиска
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -12,7 +12,7 @@ from decouple import config
 
 from db_engine import create_parser_database
 from db_engine import save_to_db  # Импорт функции для сохранения в БД
-from parser_engines import fl, habr, kwork, upwork  # Импорт парсеров
+from parser_engines import fl, kwork, upwork  # Импорт парсеров
 
 # Периодичность парсинга (в минутах)
 MIN_INTERVAL = int(config('MIN_INTERVAL'))  # Минимальная периодичность парсинга
@@ -37,9 +37,9 @@ def parse_orders():
         orders_fl, status_fl = fl.parse_last_ten()  # Парсинг с FL
         if orders_fl:
             save_to_db(orders_fl, 'fl')
-        orders_habr, status_habr = habr.parse_last_ten()  # Парсинг с Habr
-        if orders_habr:
-            save_to_db(orders_habr, 'habr')
+        # orders_habr, status_habr = habr.parse_last_ten()  # Парсинг с Habr
+        # if orders_habr:
+        #    save_to_db(orders_habr, 'habr')
         orders_kwork, status_kwork = kwork.parse_last_ten()  # Парсинг с Kwork
         if orders_kwork:
             save_to_db(orders_kwork, 'kwork')
