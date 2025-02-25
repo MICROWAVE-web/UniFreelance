@@ -1,5 +1,6 @@
 import json
 import os
+import traceback
 
 import telebot
 from decouple import config
@@ -9,11 +10,15 @@ from randomheader import RandomHeader
 
 from telegram_bot.headers import ADMINS
 
+bot = telebot.TeleBot(config("API_TOKEN"))
+
 
 def wakeup_admins(message):
-    bot = telebot.TeleBot(config("API_TOKEN"))
-    for admin in ADMINS:
-        bot.send_message(chat_id=admin, text=message)
+    try:
+        for admin in ADMINS:
+            bot.send_message(chat_id=admin, text=message)
+    except Exception:
+        traceback.print_exc()
 
 
 def get_http_proxy():

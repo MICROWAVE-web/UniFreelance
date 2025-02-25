@@ -106,6 +106,7 @@ def parse_last_ten():
     except Exception:
         print('Unexpected error:')
         traceback.print_exc()
+
         wakeup_admins(traceback.format_exc())
         return [], 'error'
     finally:
