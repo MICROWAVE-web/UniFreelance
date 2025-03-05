@@ -17,7 +17,9 @@ services:
       retries: 3
 
   parser:
-    build: .
+    build:
+      context: .
+      shm_size: '512m'
     environment:
       - DISPLAY=:0
       - VNC_PASSWORD=password
