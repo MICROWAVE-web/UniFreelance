@@ -7,8 +7,9 @@ import requests
 import telebot
 from decouple import config
 from random_user_agent.params import SoftwareName, OperatingSystem
-from random_user_agent.user_agent import UserAgent
+import random_user_agent.user_agent
 from randomheader import RandomHeader
+import fake_useragent
 
 from telegram_bot.headers import ADMINS
 
@@ -40,16 +41,25 @@ def get_http_proxy():
     return config("PROXY")
 
 
-def get_user_agent():
+def get_user_agent_1():
     """
     Возвращает случайные user-agent
     """
     software_names = [SoftwareName.CHROME.value]
     operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]
 
-    user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
+    user_agent_rotator = random_user_agent.user_agent.UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
 
     return user_agent_rotator.get_random_user_agent()
+
+def get_user_agent_2():
+    """
+    Возвращает случайные user-agent
+    """
+    ua = fake_useragent.UserAgent()
+    random_user_agent = ua.random
+    print(random_user_agent)
+    return random_user_agent
 
 
 def get_habr_cookies():

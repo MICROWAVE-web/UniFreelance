@@ -13,10 +13,11 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
 from parser.parser_engines.order_object import Order
-from parser.utilities import get_http_proxy, wakeup_admins
+from parser.utilities import get_http_proxy, wakeup_admins, get_user_agent_1, get_user_agent_2, get_upwork_cookies
 
 orders_url = 'https://www.upwork.com/nx/search/jobs/?q={query}'
 
+print(platform.system())
 isLinux = platform.system() == 'Linux'
 
 if isLinux:
@@ -46,11 +47,13 @@ def parse_last_ten():
     options = uc.ChromeOptions()
     options.add_argument("--window-size=1024, 768")
     options.add_argument(f"--proxy-server={get_http_proxy()}")
+    options.add_argument(f"--user-agent={get_user_agent_2()}")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument('--start-maximized')  # Открывать в максимизированном окне
     options.add_argument('--disable-infobars')  # Отключить уведомления
     options.add_argument('--disable-extensions')  # Отключить расширения
+    options.add_argument("--auto-open-devtools-for-tabs")
     # options.add_argument('--headless')
     options.add_argument("--disable-dev-shm-usage")
     # driver_path = ChromeDriverManager().install()
@@ -63,7 +66,18 @@ def parse_last_ten():
         traceback.print_exc()
         return [], 'error'
     try:
+        cookies = get_upwork_cookies()
         driver.get(orders_url.format(query=''))
+
+        for c in cookies:
+            p = {
+                'name': c,
+                'value': cookies[c]
+            }
+            driver.add_cookie(p)
+
+        driver.get(orders_url.format(query=''))
+
         time.sleep(random.randint(1, 5))
         # Ожидаем, пока нужный элемент полностью загрузится
         try:
@@ -147,11 +161,12 @@ def parse_last_ten():
             pass
 
         # Закрытие браузера
-        try:
-            display.stop()
-        except Exception:
-            print(f"Failed to stop virtual display!")
-            traceback.print_exc()
+        if isLinux:
+            try:
+                display.stop()
+            except Exception:
+                print(f"Failed to stop virtual display!")
+                traceback.print_exc()
 
 
 if __name__ == '__main__':

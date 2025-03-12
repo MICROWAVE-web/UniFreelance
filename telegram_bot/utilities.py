@@ -35,7 +35,7 @@ def matches_order_to_parameters(order, parameters):
     if parameters.get("minprice") and parameters.get("maxprice"):
         numbers = re.findall(r'\d+', order["payment"])
         # Преобразуем найденные числа в целые числа
-        if not all([int(parameters["minprice"]) <= int(num) <= int(parameters["maxprice"]) for num in numbers]):
+        if not any([int(parameters["minprice"]) <= int(num) <= int(parameters["maxprice"]) for num in numbers]):
             return False
 
     return True
