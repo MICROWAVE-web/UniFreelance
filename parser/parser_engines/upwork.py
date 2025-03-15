@@ -56,6 +56,8 @@ def parse_last_ten():
     options.add_argument("--auto-open-devtools-for-tabs")
     # options.add_argument('--headless')
     options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--single-process")
+    options.add_argument("--no-zygote")
     # driver_path = ChromeDriverManager().install()
     try:
         driver = uc.Chrome(
@@ -66,15 +68,15 @@ def parse_last_ten():
         traceback.print_exc()
         return [], 'error'
     try:
-        cookies = get_upwork_cookies()
+        #cookies = get_upwork_cookies()
         driver.get(orders_url.format(query=''))
 
-        for c in cookies:
-            p = {
-                'name': c,
-                'value': cookies[c]
-            }
-            driver.add_cookie(p)
+        #for c in cookies:
+        #    p = {
+        #        'name': c,
+        #        'value': cookies[c]
+        #    }
+        #    driver.add_cookie(p)
 
         driver.get(orders_url.format(query=''))
 
@@ -140,6 +142,7 @@ def parse_last_ten():
 
         wakeup_admins(traceback.format_exc())
         return [], 'error'
+
     finally:
 
         if isLinux:
@@ -159,6 +162,9 @@ def parse_last_ten():
                     driver.close()
         except Exception:
             pass
+
+        driver.quit()
+        del driver
 
         # Закрытие браузера
         if isLinux:
