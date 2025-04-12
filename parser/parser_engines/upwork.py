@@ -11,6 +11,7 @@ from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
 from parser.parser_engines.order_object import Order
 from parser.utilities import get_http_proxy, wakeup_admins, get_user_agent_1, get_user_agent_2, get_upwork_cookies
@@ -58,11 +59,11 @@ def parse_last_ten():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--single-process")
     options.add_argument("--no-zygote")
-    # driver_path = ChromeDriverManager().install()
     try:
         driver = uc.Chrome(
-            # driver_executable_path=driver_path,
-            options=options
+            driver_executable_path=ChromeDriverManager().install(),
+            options=options,
+            version_main=114,
         )
     except Exception:
         traceback.print_exc()
