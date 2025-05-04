@@ -43,9 +43,9 @@ def parse_orders():
         orders_kwork, status_kwork = kwork.parse_last_ten()  # Парсинг с Kwork
         if orders_kwork:
             save_to_db(orders_kwork, 'kwork')
-        orders_upwork, status_upwork = upwork.parse_last_ten()  # Парсинг с Upwork
-        if orders_upwork:
-            save_to_db(orders_upwork, 'upwork')
+        #orders_upwork, status_upwork = upwork.parse_last_ten()  # Парсинг с Upwork
+        #if orders_upwork:
+        #    save_to_db(orders_upwork, 'upwork')
 
         if eval(config('CONSOLE_LOG')) == 1:
             print(f"{datetime.now()} - Парсинг завершен. Ожидаем следующую итерацию.")

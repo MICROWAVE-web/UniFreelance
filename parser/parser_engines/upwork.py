@@ -35,6 +35,13 @@ def safe_find_element(driver, by, value, retries=3, delay=2):
     return None
 
 
+def check_title(driver_object):
+    driver_object.sleep(2)
+    if sb.title == 'Upwork':
+        return True
+    else:
+        raise Exception(ttle)
+
 def parse_last_ten():
     if isLinux:
         try:
@@ -46,7 +53,7 @@ def parse_last_ten():
             return [], 'error'
 
     options = uc.ChromeOptions()
-    options.add_argument("--window-size=1024, 768")
+    options.add_argument("--window-size=1024,768")
     options.add_argument(f"--proxy-server={get_http_proxy()}")
     options.add_argument(f"--user-agent={get_user_agent_2()}")
     options.add_argument("--disable-gpu")
@@ -54,11 +61,11 @@ def parse_last_ten():
     options.add_argument('--start-maximized')  # Открывать в максимизированном окне
     options.add_argument('--disable-infobars')  # Отключить уведомления
     options.add_argument('--disable-extensions')  # Отключить расширения
-    options.add_argument("--auto-open-devtools-for-tabs")
+    # options.add_argument("--auto-open-devtools-for-tabs")
     # options.add_argument('--headless')
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--single-process")
-    options.add_argument("--no-zygote")
+    # options.add_argument("--single-process")
+    # options.add_argument("--no-zygote")
     try:
         driver = uc.Chrome(
             driver_executable_path=ChromeDriverManager().install(),
@@ -71,7 +78,17 @@ def parse_last_ten():
     try:
         #cookies = get_upwork_cookies()
         driver.get(orders_url.format(query=''))
-
+        try:
+            verify_success(driver)
+        except Exception:
+            if sb.is_element_visible('input[value*="Verify"]'):
+                sb.uc_click('input[value*="Verify"]')
+            else:
+                sb.uc_gui_click_captcha()
+            try:
+                verify_success(sb)
+            except Exception:
+                raise Exception("Detected!")
         #for c in cookies:
         #    p = {
         #        'name': c,
